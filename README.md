@@ -38,6 +38,9 @@ NotImplementedError: stack_frames: implement frame stacking
 
 That's expected — you've just reached backlog item #1.
 
+To poke at the raw frames first (e.g. plot them before diving into the
+pipeline code), see [`notebooks/explore_frames.ipynb`](notebooks/explore_frames.ipynb).
+
 ## Code layout
 
 - `astrolab/synth.py` — deterministic synthetic star-field generator
@@ -50,13 +53,18 @@ That's expected — you've just reached backlog item #1.
   conflicts during integration. That's by design.
 - `data/frames/*.npy` — 5 synthetic, noisy exposures of the same field
   (128×128 pixels, 25 stars), generated with `astrolab.synth`, seed 42.
-  Regenerate anytime with `python -m astrolab.synth` — output is
-  byte-identical, so there's normally no need to.
+  Gitignored — generated, not committed. `astrolab.pipeline.run()`
+  regenerates it automatically the first time it's missing, so a fresh
+  clone/fork just works; run `python -m astrolab.synth` directly if you
+  want the frames without running the pipeline (e.g. for the notebook).
+  Output is byte-identical every time.
 - `astrolab/realdata.py` — **bonus feature, stubbed**: fetch a real
   telescope image (e.g. the Orion Nebula) live from a public sky-survey
   archive via `astroquery`, instead of a synthetic frame, for a genuine
   "real astro image" payoff. Not required for the core pipeline — the
   rest of the pipeline stays deterministic and offline by design.
+- `notebooks/explore_frames.ipynb` — loads and plots the sample frames,
+  for a quick look at the input data before touching `pipeline.py`.
 
 ## License
 

@@ -8,6 +8,18 @@ bug: it's the one place every team's PR touches.
 """
 
 from astrolab.io import load_frame_set
+from astrolab.synth import SAMPLE_FRAMES_DIR, regenerate_sample_data
+
+
+def _ensure_sample_frames():
+    """Generate the sample frames if missing.
+
+    data/frames/ is gitignored (generated, not source) - a fresh clone or
+    fork starts without it, so regenerate deterministically from the same
+    seed rather than requiring a manual step.
+    """
+    if not SAMPLE_FRAMES_DIR.is_dir() or not any(SAMPLE_FRAMES_DIR.glob("*.npy")):
+        regenerate_sample_data()
 
 
 def stack_frames(frames):
@@ -48,6 +60,7 @@ def compose_image(frame):
 def run():
     """Run the full pipeline end to end, printing progress as it goes."""
     print("Loading frames...")
+    _ensure_sample_frames()
     frames = load_frame_set()
     print(f"  loaded {len(frames)} frames of shape {frames[0].shape}")
 

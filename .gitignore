@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 .venv*/
 *.egg-info/
+data/frames/
+.ipynb_checkpoints/
+
+# instructor-local dev convenience, not course content (see shell.nix comment)
+/shell.nix
